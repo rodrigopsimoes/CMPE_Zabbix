@@ -1,0 +1,9 @@
+---
+- name: Crear un archivo de prueba en el servidor
+  hosts: all
+  tasks:
+    - name: Crear archivo en la carpeta temporal
+      ansible.builtin.file:
+        path: /tmp/awx_fue_aqui.txt
+        state: touch
+        mode: '0644'
