@@ -1,0 +1,10 @@
+---
+- name: Prueba de conexión Windows
+  hosts: all
+  gather_facts: false  # Desactiva esto primero para probar solo la conexión
+  tasks:
+    - name: Ping de Windows
+      ansible.windows.win_ping:
+
+    - name: Ejecutar un comando de PowerShell
+      ansible.windows.win_shell: Get-Service | Where-Object {$_.Status -eq "Running"} | Select-Object -First 5
