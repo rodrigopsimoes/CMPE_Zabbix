@@ -1,6 +1,11 @@
 ---
-- name: Probar conectividad básica
+- name: Probar conexión con Windows
   hosts: all
   tasks:
-    - name: Ejecutar ping de Ansible
-      ansible.builtin.ping:
+    - name: Win Ping
+      ansible.windows.win_ping:
+
+    - name: Obtener info del sistema Windows
+      ansible.windows.win_powershell:
+        script: |
+          Get-ComputerInfo | Select-Object OsName, CsCaption
