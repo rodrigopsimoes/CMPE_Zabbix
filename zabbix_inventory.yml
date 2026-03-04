@@ -1,10 +1,5 @@
----
-plugin: community.zabbix.zabbix_inventory
-# La URL de tu servidor Zabbix (ajusta la IP/DNS)
-ansible_host: http://10.173.16.4/zabbix/api_jsonrpc.php
-# No ponemos usuario/password aquí por seguridad, 
-# los configuraremos en la "Credential" de AWX.
+plugin: community.zabbix.zabbix
+server_url: "{{ lookup('env', 'ZABBIX_SERVER') }}"
+login_user: "{{ lookup('env', 'ZABBIX_USERNAME') }}"
+login_password: "{{ lookup('env', 'ZABBIX_PASSWORD') }}"
 validate_certs: false
-group_by_host_groups: true
-# Esto ayuda a que los nombres en AWX sean los mismos que en Zabbix
-ansible_connection: httpapi
