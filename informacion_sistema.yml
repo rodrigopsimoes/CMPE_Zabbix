@@ -1,0 +1,7 @@
+---
+- name: Obtener información del sistema
+  hosts: all
+  tasks:
+    - name: Mostrar la distribución del SO y la memoria libre
+      ansible.builtin.debug:
+        msg: "El servidor {{ inventory_hostname }} usa {{ ansible_distribution }} y tiene {{ ansible_memfree_mb }} MB libres."
