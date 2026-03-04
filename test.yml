@@ -1,0 +1,11 @@
+---
+- name: Mi primera automatización AWX
+  hosts: all
+  tasks:
+    - name: Crear un archivo de prueba
+      file:
+        path: /tmp/awx_fue_aqui.txt
+        state: touch
+    - name: Mostrar un mensaje
+      debug:
+        msg: "¡Hola! He automatizado esto desde la interfaz de AWX."
