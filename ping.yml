@@ -1,0 +1,6 @@
+---
+- name: Probar conectividad básica
+  hosts: all
+  tasks:
+    - name: Ejecutar ping de Ansible
+      ansible.builtin.ping:
