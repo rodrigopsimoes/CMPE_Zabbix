@@ -1,0 +1,60 @@
+---
+- name: Sincronizar Hosts de Zabbix a AWX sin plugins
+  hosts: localhost
+  gather_facts: false
+  vars:
+    # URL de tu Zabbix
+    zabbix_api: "http://10.173.16.4/zabbix/api_jsonrpc.php"
+    z_user: "Admin"
+    z_pass: "!*sSI?ju4"Oayc#*m"
+    
+    # Datos de AWX (para que el playbook se hable a sí mismo)
+    awx_url: "http://localhost" # O la IP de tu AWX
+    awx_inventory_id: "5" # Mira el número en la URL de tu inventario
+
+  tasks:
+    - name: 1. Login en Zabbix
+      uri:
+        url: "{{ zabbix_api }}"
+        method: POST
+        body_format: json
+        body:
+          jsonrpc: "2.0"
+          method: "user.login"
+          params: { "username": "{{ z_user }}", "password": "{{ z_pass }}" }
+          id: 1
+      register: z_auth
+
+    - name: 2. Obtener Hosts de Zabbix
+      uri:
+        url: "{{ zabbix_api }}"
+        method: POST
+        body_format: json
+        body:
+          jsonrpc: "2.0"
+          method: "host.get"
+          params:
+            output: ["host", "name"]
+            selectInterfaces: ["ip"]
+          auth: "{{ z_auth.json.result }}"
+          id: 2
+      register: z_hosts
+
+    - name: 3. Inyectar hosts en el inventario de AWX
+      uri:
+        url: "{{ awx_url }}/api/v2/hosts/"
+        method: POST
+        # Usa una credencial de tipo "Ansible Controller" o login básico
+        user: "99009364"
+        password: "!*sSI?ju4"Oayc#*m"
+        force_basic_auth: yes
+        body_format: json
+        body:
+          name: "{{ item.host }}"
+          inventory: "{{ awx_inventory_id }}"
+          enabled: true
+          variables: |
+            ansible_host: {{ item.interfaces[0].ip }}
+        status_code: [201, 400] # 400 si el host ya existe
+      loop: "{{ z_hosts.json.result }}"
+      no_log: true # Para no llenar el log de datos sensibles
