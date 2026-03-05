@@ -1,5 +1,17 @@
-plugin: community.zabbix.zabbix
-server_url: "{{ lookup('env', 'ZABBIX_SERVER') }}"
-login_user: "{{ lookup('env', 'ZABBIX_USERNAME') }}"
-login_password: "{{ lookup('env', 'ZABBIX_PASSWORD') }}"
-validate_certs: false
+# Este es un archivo de configuración de plugin, NO un playbook
+plugin: community.zabbix.zabbix_inventory
+
+# URL de tu API de Zabbix
+server_url: http://tu-servidor-zabbix/zabbix
+
+# Credenciales (puedes dejarlas aquí para probar, o usar variables de AWX)
+login_user: admin
+login_password: tu_password_seguro
+
+# Esto le dice al plugin qué usar como nombre de host en Ansible
+# interface_type 1 es la IP del Agente Zabbix
+interface_type: 1
+ansible_connection: ssh
+
+# Opcional: crea grupos en AWX basados en los grupos de Zabbix
+group_prefix: zabbix_group_
