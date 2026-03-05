@@ -1,0 +1,4 @@
+---
+collections:
+  - name: community.zabbix
+    version: 2.3.0 # O la versión más reciente
